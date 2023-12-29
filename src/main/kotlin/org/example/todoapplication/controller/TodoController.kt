@@ -22,4 +22,9 @@ class TodoController(val service: TodoService) {
     fun getTodo(@PathVariable id: String): TodoDTO {
         return service.getTodo(id)
     }
+
+    @DeleteMapping("/todo/{id}")
+    fun deleteTodo(@PathVariable id: String) {
+        service.delete(id)
+    }
 }

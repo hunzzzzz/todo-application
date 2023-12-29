@@ -39,4 +39,10 @@ class TodoService(val repository: TodoRepository) {
             return todo
         }
     }
+
+    fun delete(id: String) {
+        if (repository.findById(id.toLong()).isEmpty)
+            throw IllegalStateException("존재하지 않는 회원입니다")
+        else repository.deleteById(id.toLong())
+    }
 }

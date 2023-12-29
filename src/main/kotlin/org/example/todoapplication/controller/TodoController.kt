@@ -2,11 +2,7 @@ package org.example.todoapplication.controller
 
 import org.example.todoapplication.dto.TodoDTO
 import org.example.todoapplication.service.TodoService
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api")
@@ -15,5 +11,15 @@ class TodoController(val service: TodoService) {
     fun register(@RequestBody todoDTO: TodoDTO): TodoDTO {
         service.register(todoDTO)
         return todoDTO
+    }
+
+    @GetMapping("/todos")
+    fun getAllTodos(): MutableList<TodoDTO> {
+        return service.getAllTodos()
+    }
+
+    @GetMapping("/todo/{id}")
+    fun getTodo(@PathVariable id: String): TodoDTO {
+        return service.getTodo(id)
     }
 }

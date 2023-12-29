@@ -8,7 +8,6 @@ import java.time.LocalDateTime
 @Getter
 @Setter
 class TodoDTO {
-    var todoID: Long = 0L
     var todoTitle: String = ""
     var todoContents: String = ""
 

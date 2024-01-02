@@ -4,6 +4,8 @@
 
 23.12.29 API 명세서 작성
 
+23.12.29 TODO 등록/전체조회/조회/삭제 기능 구현 및 API 테스트 완료 (수정 기능 미구현, 추후 반영 예정)
+
 ## API 명세서 (Todo)
 
 |기능|Method|URL|Request|Response
@@ -14,3 +16,4 @@
 |TODO 수정|PUT|/api/todo/{id}|Json|수정/등록 성공 여부|
 |TODO 삭제|DELETE|/api/todo/{id}| |삭제 성공 여부
 * Request의 Json 형식 = {"todoTitle": "할일제목", "todoContents": "할일내용", "todoDate": "수행일"}
+* API 테스트 도구 = Swagger 라이브러리

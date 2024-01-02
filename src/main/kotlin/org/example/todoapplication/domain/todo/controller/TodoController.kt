@@ -1,7 +1,7 @@
-package org.example.todoapplication.controller
+package org.example.todoapplication.domain.todo.controller
 
-import org.example.todoapplication.dto.TodoDTO
-import org.example.todoapplication.service.TodoService
+import org.example.todoapplication.domain.todo.dto.TodoDTO
+import org.example.todoapplication.domain.todo.service.TodoService
 import org.springframework.web.bind.annotation.*
 
 @RestController

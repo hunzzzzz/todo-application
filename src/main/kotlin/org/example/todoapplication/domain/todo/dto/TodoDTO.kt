@@ -1,4 +1,4 @@
-package org.example.todoapplication.dto
+package org.example.todoapplication.domain.todo.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import lombok.Getter

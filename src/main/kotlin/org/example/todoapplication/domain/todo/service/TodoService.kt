@@ -1,8 +1,8 @@
-package org.example.todoapplication.service
+package org.example.todoapplication.domain.todo.service
 
-import org.example.todoapplication.dto.TodoDTO
-import org.example.todoapplication.entity.TodoEntity
-import org.example.todoapplication.repository.TodoRepository
+import org.example.todoapplication.domain.todo.dto.TodoDTO
+import org.example.todoapplication.domain.todo.entity.TodoEntity
+import org.example.todoapplication.domain.todo.repository.TodoRepository
 import org.springframework.stereotype.Service
 
 @Service

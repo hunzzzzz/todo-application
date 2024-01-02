@@ -5,25 +5,25 @@ import org.example.todoapplication.domain.todo.service.TodoService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/todos")
 class TodoController(val service: TodoService) {
-    @PostMapping("/todo")
-    fun register(@RequestBody todoDTO: TodoDTO): TodoDTO {
+    @PostMapping
+    fun createTodo(@RequestBody todoDTO: TodoDTO): TodoDTO {
         service.register(todoDTO)
         return todoDTO
     }
 
-    @GetMapping("/todos")
-    fun getAllTodos(): MutableList<TodoDTO> {
+    @GetMapping
+    fun getTodos(): MutableList<TodoDTO> {
         return service.getAllTodos()
     }
 
-    @GetMapping("/todo/{id}")
+    @GetMapping("/{id}")
     fun getTodo(@PathVariable id: String): TodoDTO {
         return service.getTodo(id)
     }
 
-    @DeleteMapping("/todo/{id}")
+    @DeleteMapping("/{id}")
     fun deleteTodo(@PathVariable id: String) {
         service.delete(id)
     }

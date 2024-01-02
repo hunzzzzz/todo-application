@@ -19,10 +19,7 @@ class TodoService(val repository: TodoRepository) {
     fun getAllTodos(): MutableList<TodoResponse> {
         val list = mutableListOf<TodoResponse>()
         for (entity in repository.findAll()) {
-            val todo = TodoResponse()
-            todo.todoTitle = entity.title
-            todo.todoContents = entity.contents
-            todo.todoDate = entity.date
+            val todo = TodoResponse(entity.id, entity.title, entity.contents, entity.date)
             list.add(todo)
         }
         return list
@@ -33,10 +30,7 @@ class TodoService(val repository: TodoRepository) {
         if (entity.isEmpty)
             throw IllegalStateException("존재하지 않는 회원입니다")
         else {
-            val todo = TodoResponse()
-            todo.todoTitle = entity.get().title
-            todo.todoContents = entity.get().contents
-            todo.todoDate = entity.get().date
+            val todo = TodoResponse(entity.get().id, entity.get().title, entity.get().contents, entity.get().date)
             return todo
         }
     }

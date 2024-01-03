@@ -8,6 +8,8 @@
 
 24.01.02 패키지 리팩토링 및 dto 세분화 (멘토님 피드백 반영)
 
+24.01.03 코드 리팩토링, TODO 수정(update) 기능 구현, 예외 처리
+
 ## API 명세서 (Todo)
 
 |기능|Method|URL|Request|Response

@@ -19,9 +19,13 @@ class TodoController(val service: TodoService) {
     @GetMapping("/{id}")
     fun getTodo(@PathVariable id: Long) = ResponseEntity.status(HttpStatus.OK).body(service.getTodoById(id))
 
+    @PutMapping("/{id}")
+    fun updateTodo(@PathVariable id: Long, @RequestBody createTodoRequest: CreateTodoRequest) =
+        ResponseEntity.status(HttpStatus.OK).body(service.updateTodo(id, createTodoRequest))
+
     @DeleteMapping("/{id}")
     fun deleteTodo(@PathVariable id: Long): ResponseEntity<Unit> {
-        service.delete(id)
+        service.deleteTodo(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

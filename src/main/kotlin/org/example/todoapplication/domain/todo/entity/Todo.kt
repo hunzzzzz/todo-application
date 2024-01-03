@@ -12,12 +12,12 @@ import java.time.LocalDateTime
 @Entity
 @Getter
 @Setter
-@Table(name = "TODO")
-class TodoEntity {
+@Table(name = "Todo")
+class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L
     var title: String = ""
-    var contents: String = ""
+    var contents: String? = null
     var date: LocalDateTime = LocalDateTime.now()
 }

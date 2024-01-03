@@ -2,17 +2,17 @@ package org.example.todoapplication.domain.todo.service
 
 import org.example.todoapplication.domain.todo.dto.CreateTodoRequest
 import org.example.todoapplication.domain.todo.dto.TodoResponse
-import org.example.todoapplication.domain.todo.entity.TodoEntity
+import org.example.todoapplication.domain.todo.entity.Todo
 import org.example.todoapplication.domain.todo.repository.TodoRepository
 import org.springframework.stereotype.Service
 
 @Service
 class TodoService(val repository: TodoRepository) {
     fun createTodo(request: CreateTodoRequest) {
-        val entity = TodoEntity()
-        entity.title = request.todoTitle
-        entity.contents = request.todoContents
-        entity.date = request.todoDate
+        val entity = Todo()
+        entity.title = request.title
+        entity.contents = request.contents
+        entity.date = request.date
         repository.save(entity)
     }
 

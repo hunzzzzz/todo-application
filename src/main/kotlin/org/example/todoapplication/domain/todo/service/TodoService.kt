@@ -2,6 +2,7 @@ package org.example.todoapplication.domain.todo.service
 
 import jakarta.transaction.Transactional
 import org.example.todoapplication.domain.exception.EntityNotFoundException
+import org.example.todoapplication.domain.exception.ExceedMaxLengthException
 import org.example.todoapplication.domain.todo.dto.CreateTodoRequest
 import org.example.todoapplication.domain.todo.dto.TodoResponse
 import org.example.todoapplication.domain.todo.entity.Todo
@@ -15,11 +16,19 @@ class TodoService(val repository: TodoRepository) {
     // Entity → Response
     private fun entityToResponse(todo: Todo) = TodoResponse(todo.id!!, todo.title, todo.contents, todo.date)
 
-    @Transactional
-    fun createTodo(request: CreateTodoRequest) =
-        entityToResponse(repository.save(Todo(request.title, request.contents, request.date)))
+    private fun isTitleExceedItsLength(title: String) = title.length > 200
+    private fun isContentsExceedItsLength(contents: String) = contents.length > 1000
 
-    fun getTodos() = repository.findAll().map { entityToResponse(it) }
+    @Transactional
+    fun createTodo(request: CreateTodoRequest): TodoResponse {
+        if (isTitleExceedItsLength(request.title))
+            throw ExceedMaxLengthException("title", 200)
+        else if (request.contents != null && isContentsExceedItsLength(request.contents!!))
+            throw ExceedMaxLengthException("contents", 1000)
+        else return entityToResponse(repository.save(Todo(request.title, request.contents, request.date)))
+    }
+
+    fun getTodos() = repository.findAll(Sort.by(Sort.Direction.ASC, "id")).map { entityToResponse(it) }
 
     fun getTodoById(id: Long) =
         entityToResponse(repository.findByIdOrNull(id) ?: throw EntityNotFoundException(id, "Todo"))
@@ -37,6 +46,10 @@ class TodoService(val repository: TodoRepository) {
         val todo = repository.findByIdOrNull(id)
 
         if (todo == null) return createTodo(request)
+        else if (isTitleExceedItsLength(request.title))
+            throw ExceedMaxLengthException("title", 200)
+        else if (request.contents != null && isContentsExceedItsLength(request.contents!!))
+            throw ExceedMaxLengthException("contents", 1000)
         else {
             todo.title = request.title
             todo.contents = request.contents

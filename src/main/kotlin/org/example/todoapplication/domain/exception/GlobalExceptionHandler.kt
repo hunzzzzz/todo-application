@@ -12,4 +12,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalStateException::class)
     fun handleIllegalStateException(e: Exception) = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+
+    @ExceptionHandler(ExceedMaxLengthException::class)
+    fun handleExceedMaxLengthException(e: Exception) = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
 }

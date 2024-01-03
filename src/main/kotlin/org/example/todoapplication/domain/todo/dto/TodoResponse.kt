@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 @Getter
 @Setter
 data class TodoResponse(
-    var id: Long,
+    val id: Long,
     var todoTitle: String,
     var todoContents: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

@@ -6,23 +6,31 @@ import org.example.todoapplication.domain.todo.dto.CreateTodoRequest
 import org.example.todoapplication.domain.todo.dto.TodoResponse
 import org.example.todoapplication.domain.todo.entity.Todo
 import org.example.todoapplication.domain.todo.repository.TodoRepository
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class TodoService(val repository: TodoRepository) {
     // Entity → Response
-    private fun entityToResponse(todo: Todo)
-    = TodoResponse(todo.id!!, todo.title, todo.contents, todo.date)
+    private fun entityToResponse(todo: Todo) = TodoResponse(todo.id!!, todo.title, todo.contents, todo.date)
 
     @Transactional
     fun createTodo(request: CreateTodoRequest) =
         entityToResponse(repository.save(Todo(request.title, request.contents, request.date)))
 
-    fun getAllTodos() = repository.findAll().map { entityToResponse(it) }
+    fun getTodos() = repository.findAll().map { entityToResponse(it) }
 
     fun getTodoById(id: Long) =
         entityToResponse(repository.findByIdOrNull(id) ?: throw EntityNotFoundException(id, "Todo"))
+
+    fun sortTodosByDate(sort: String): List<TodoResponse> {
+        return when (sort) {
+            "ASC" -> repository.findAll(Sort.by(Sort.Direction.ASC, "date")).map { entityToResponse(it) }
+            "DESC" -> repository.findAll(Sort.by(Sort.Direction.DESC, "date")).map { entityToResponse(it) }
+            else -> throw IllegalStateException("잘못된 요청입니다.")
+        }
+    }
 
     @Transactional
     fun updateTodo(id: Long, request: CreateTodoRequest): TodoResponse {

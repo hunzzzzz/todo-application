@@ -14,7 +14,11 @@ class TodoController(val service: TodoService) {
         ResponseEntity.status(HttpStatus.CREATED).body(service.createTodo(createTodoRequest))
 
     @GetMapping
-    fun getTodos() = ResponseEntity.status(HttpStatus.OK).body(service.getAllTodos())
+    fun getTodos() = ResponseEntity.status(HttpStatus.OK).body(service.getTodos())
+
+    @GetMapping("/sorted")
+    fun sortTodosByDate(@RequestParam sort: String) =
+        ResponseEntity.status(HttpStatus.OK).body(service.sortTodosByDate(sort))
 
     @GetMapping("/{id}")
     fun getTodo(@PathVariable id: Long) = ResponseEntity.status(HttpStatus.OK).body(service.getTodoById(id))

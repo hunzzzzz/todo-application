@@ -1,5 +1,6 @@
 package org.example.todoapplication.domain.todo.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -12,7 +13,9 @@ import java.time.LocalDateTime
 class Todo(
     var title: String = "",
     var contents: String? = null,
-    var date: LocalDateTime = LocalDateTime.now()
+    var date: LocalDateTime = LocalDateTime.now(),
+    @Column(name = "is-completed")
+    var isCompleted: Boolean = false
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

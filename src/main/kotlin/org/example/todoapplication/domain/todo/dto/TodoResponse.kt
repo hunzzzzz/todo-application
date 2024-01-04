@@ -12,5 +12,6 @@ data class TodoResponse(
     var todoTitle: String,
     var todoContents: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    var todoDate: LocalDateTime
+    var todoDate: LocalDateTime,
+    var isCompleted: Boolean
 )

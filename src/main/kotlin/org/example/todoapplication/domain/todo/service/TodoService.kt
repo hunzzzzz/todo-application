@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service
 @Service
 class TodoService(val repository: TodoRepository) {
     // Entity → Response
-    private fun entityToResponse(todo: Todo) = TodoResponse(todo.id!!, todo.title, todo.contents, todo.date)
+    private fun entityToResponse(todo: Todo) =
+        TodoResponse(todo.id!!, todo.title, todo.contents, todo.date, todo.isCompleted)
 
     private fun isTitleExceedItsLength(title: String) = title.length > 200
     private fun isContentsExceedItsLength(contents: String) = contents.length > 1000
@@ -56,6 +57,13 @@ class TodoService(val repository: TodoRepository) {
             todo.date = request.date
             return entityToResponse(repository.save(todo))
         }
+    }
+
+    @Transactional
+    fun updateTodoCompletionStatus(id: Long) {
+        val todo = repository.findByIdOrNull(id) ?: throw EntityNotFoundException(id, "Todo")
+        todo.isCompleted = !todo.isCompleted
+        repository.save(todo)
     }
 
     @Transactional

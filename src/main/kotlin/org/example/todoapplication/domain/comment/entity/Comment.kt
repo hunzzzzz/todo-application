@@ -1,5 +1,6 @@
 package org.example.todoapplication.domain.comment.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -16,6 +17,7 @@ class Comment(
     var contents: String = "",
     var password: String = "",
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "todo_id")
     val todo: Todo = Todo()
 ) {

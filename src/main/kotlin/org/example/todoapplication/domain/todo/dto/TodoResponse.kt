@@ -14,5 +14,6 @@ data class TodoResponse(
     var todoContents: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     var todoDate: LocalDateTime,
-    var isCompleted: Boolean
+    var isCompleted: Boolean,
+    val comments: MutableList<Comment>
 )

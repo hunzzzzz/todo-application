@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 class TodoService(val repository: TodoRepository) {
     // Entity → Response
     private fun entityToResponse(todo: Todo) =
-        TodoResponse(todo.id!!, todo.title, todo.contents, todo.date, todo.isCompleted)
+        TodoResponse(todo.id!!, todo.title, todo.contents, todo.date, todo.isCompleted, todo.comments)
 
     private fun isTitleExceedItsLength(title: String) = title.length > 200
     private fun isContentsExceedItsLength(contents: String) = contents.length > 1000

@@ -8,7 +8,6 @@ import org.example.todoapplication.domain.comment.repository.CommentRepository
 import org.example.todoapplication.domain.exception.EntityNotFoundException
 import org.example.todoapplication.domain.todo.repository.TodoRepository
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -36,5 +35,14 @@ class CommentService(private val todoRepository: TodoRepository, private val com
         todo.comments.add(comment)
         todoRepository.save(todo)
         return entityToResponse(comment)
+    }
+
+    @Transactional
+    fun deleteComment(todoId: Long, commentId: Long) {
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw EntityNotFoundException(todoId, "Todo")
+        val comment = commentRepository.findByIdOrNull(commentId) ?: throw EntityNotFoundException(commentId, "Comment")
+
+        todo.comments.remove(comment)
+        todoRepository.save(todo)
     }
 }

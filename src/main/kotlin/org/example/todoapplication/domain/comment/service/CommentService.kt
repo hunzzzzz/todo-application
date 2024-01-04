@@ -14,7 +14,14 @@ class CommentService(private val todoRepository: TodoRepository, private val com
         CommentResponse(comment.id!!, comment.contents)
 
     fun getComments(todoId: Long): List<CommentResponse> {
-        val todo = todoRepository.findByIdOrNull(todoId) ?: throw throw EntityNotFoundException(todoId, "Todo")
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw EntityNotFoundException(todoId, "Todo")
         return todo.comments.map { entityToResponse(it) }
+    }
+
+    fun getComment(todoId: Long, commentId: Long): CommentResponse {
+        todoRepository.findByIdOrNull(todoId) ?: throw EntityNotFoundException(todoId, "Todo")
+        val comment = commentRepository.findByTodoIdAndId(todoId, commentId)
+            ?: throw EntityNotFoundException(commentId, "Comment")
+        return entityToResponse(comment)
     }
 }

@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/todos/{todoID}/comments")
+@RequestMapping("/api/todos/{todoId}/comments")
 class CommentController(private val service: CommentService) {
     @GetMapping
-    fun getComments(@PathVariable todoID: Long) = ResponseEntity.status(HttpStatus.OK).body(service.getComments(todoID))
+    fun getComments(@PathVariable todoId: Long) = ResponseEntity.status(HttpStatus.OK).body(service.getComments(todoId))
+
+    @GetMapping("/{commentId}")
+    fun getComment(@PathVariable todoId: Long, @PathVariable commentId: Long) =
+        ResponseEntity.status(HttpStatus.OK).body(service.getComment(todoId, commentId))
 }

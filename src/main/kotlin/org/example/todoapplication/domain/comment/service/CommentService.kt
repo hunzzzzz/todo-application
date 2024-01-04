@@ -6,6 +6,7 @@ import org.example.todoapplication.domain.comment.dto.CommentResponse
 import org.example.todoapplication.domain.comment.entity.Comment
 import org.example.todoapplication.domain.comment.repository.CommentRepository
 import org.example.todoapplication.domain.exception.EntityNotFoundException
+import org.example.todoapplication.domain.exception.WrongPasswordException
 import org.example.todoapplication.domain.todo.repository.TodoRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -43,11 +44,15 @@ class CommentService(private val todoRepository: TodoRepository, private val com
         val comment = commentRepository.findByTodoIdAndId(todoId, commentId)
             ?: throw EntityNotFoundException(commentId, "Comment")
 
-        todo.comments.remove(comment)
-        comment.contents = request.contents
-        todo.comments.add(comment)
-        todoRepository.save(todo)
-        return entityToResponse(comment)
+        if (comment.password != request.password)
+            throw WrongPasswordException(request.password)
+        else {
+            todo.comments.remove(comment)
+            comment.contents = request.contents
+            todo.comments.add(comment)
+            todoRepository.save(todo)
+            return entityToResponse(comment)
+        }
     }
 
     @Transactional

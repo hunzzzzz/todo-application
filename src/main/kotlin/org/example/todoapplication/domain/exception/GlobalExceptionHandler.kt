@@ -15,4 +15,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(ExceedMaxLengthException::class)
     fun handleExceedMaxLengthException(e: Exception) = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+
+    @ExceptionHandler(WrongPasswordException::class)
+    fun handleWrongPasswordException(e: Exception) = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
 }

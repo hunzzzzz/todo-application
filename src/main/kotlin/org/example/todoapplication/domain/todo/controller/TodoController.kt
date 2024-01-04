@@ -34,4 +34,3 @@ class TodoController(val service: TodoService) {
     @DeleteMapping("/{id}")
     fun deleteTodo(@PathVariable id: Long) = ResponseEntity.status(HttpStatus.NO_CONTENT).body(service.deleteTodo(id))
 }
-

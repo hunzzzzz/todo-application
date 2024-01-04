@@ -38,6 +38,19 @@ class CommentService(private val todoRepository: TodoRepository, private val com
     }
 
     @Transactional
+    fun updateComment(todoId: Long, commentId: Long, request: AddCommentRequest): CommentResponse {
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw EntityNotFoundException(todoId, "Todo")
+        val comment = commentRepository.findByTodoIdAndId(todoId, commentId)
+            ?: throw EntityNotFoundException(commentId, "Comment")
+
+        todo.comments.remove(comment)
+        comment.contents = request.contents
+        todo.comments.add(comment)
+        todoRepository.save(todo)
+        return entityToResponse(comment)
+    }
+
+    @Transactional
     fun deleteComment(todoId: Long, commentId: Long) {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw EntityNotFoundException(todoId, "Todo")
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw EntityNotFoundException(commentId, "Comment")

@@ -44,10 +44,8 @@ class TodoService(val repository: TodoRepository) {
 
     @Transactional
     fun updateTodo(id: Long, request: CreateTodoRequest): TodoResponse {
-        val todo = repository.findByIdOrNull(id)
-
-        if (todo == null) return createTodo(request)
-        else if (isTitleExceedItsLength(request.title))
+        val todo = repository.findByIdOrNull(id) ?: return createTodo(request)
+        if (isTitleExceedItsLength(request.title))
             throw ExceedMaxLengthException("title", 200)
         else if (request.contents != null && isContentsExceedItsLength(request.contents!!))
             throw ExceedMaxLengthException("contents", 1000)

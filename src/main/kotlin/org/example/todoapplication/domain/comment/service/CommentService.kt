@@ -3,6 +3,7 @@ package org.example.todoapplication.domain.comment.service
 import jakarta.transaction.Transactional
 import org.example.todoapplication.domain.comment.dto.AddCommentRequest
 import org.example.todoapplication.domain.comment.dto.CommentResponse
+import org.example.todoapplication.domain.comment.dto.DeleteCommentRequest
 import org.example.todoapplication.domain.comment.entity.Comment
 import org.example.todoapplication.domain.comment.repository.CommentRepository
 import org.example.todoapplication.domain.exception.EntityNotFoundException
@@ -44,11 +45,16 @@ class CommentService(private val todoRepository: TodoRepository, private val com
     }
 
     @Transactional
-    fun deleteComment(todoId: Long, commentId: Long) {
+    fun deleteComment(todoId: Long, commentId: Long, request: DeleteCommentRequest) {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw EntityNotFoundException(todoId, "Todo")
-        val comment = commentRepository.findByIdOrNull(commentId) ?: throw EntityNotFoundException(commentId, "Comment")
+        val comment = commentRepository.findByTodoIdAndId(todoId, commentId)
+            ?: throw EntityNotFoundException(commentId, "Comment")
 
-        todo.comments.remove(comment)
-        todoRepository.save(todo)
+        if (comment.password != request.password)
+            throw WrongPasswordException(request.password)
+        else {
+            todo.comments.remove(comment)
+            todoRepository.save(todo)
+        }
     }
 }

@@ -1,6 +1,7 @@
 package org.example.todoapplication.domain.comment.controller
 
 import org.example.todoapplication.domain.comment.dto.AddCommentRequest
+import org.example.todoapplication.domain.comment.dto.DeleteCommentRequest
 import org.example.todoapplication.domain.comment.service.CommentService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -28,6 +30,11 @@ class CommentController(private val service: CommentService) {
     ) = ResponseEntity.status(HttpStatus.OK).body(service.updateComment(todoId, commentId, addCommentRequest))
 
     @DeleteMapping("/{commentId}")
-    fun deleteComment(@PathVariable todoId: Long, @PathVariable commentId: Long) =
-        ResponseEntity.status(HttpStatus.NO_CONTENT).body(service.deleteComment(todoId, commentId))
+    fun deleteComment(
+        @PathVariable todoId: Long,
+        @PathVariable commentId: Long,
+        @RequestBody deleteCommentRequest: DeleteCommentRequest
+    ) =
+        ResponseEntity.status(HttpStatus.NO_CONTENT)
+            .body(service.deleteComment(todoId, commentId, deleteCommentRequest))
 }

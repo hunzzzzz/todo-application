@@ -12,6 +12,8 @@
 
 [24.01.04] Todo 테이블에 수행 여부(is-completed) 추가, Comment 관련 API 구현 완료, 예외 처리 케이스 추가
 
+[24.01.05] 코드 리팩토링
+
 ## 개발 환경 및 사용 도구
 - JAVA 17 (JDK 17.0.9)
 - IDE: IntelliJ Ultimate

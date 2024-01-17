@@ -2,6 +2,7 @@ package org.hunzz.todoapplication.domain.todo.controller
 
 import org.hunzz.todoapplication.domain.todo.dto.request.AddTodoRequest
 import org.hunzz.todoapplication.domain.todo.service.TodoService
+import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
@@ -24,6 +26,10 @@ class TodoController(
 
     @GetMapping
     fun findAllTodos() = ResponseEntity.ok(todoService.findAllTodos())
+
+    @GetMapping("/{sort}/")
+    fun findAllTodosWithCriteria(@PathVariable sort: Sort.Direction, @RequestParam criteria: String) =
+        ResponseEntity.ok(todoService.findAllTodosWithCriteria(sort, criteria))
 
     @PostMapping
     fun addTodo(@RequestBody request: AddTodoRequest): ResponseEntity<Unit> =

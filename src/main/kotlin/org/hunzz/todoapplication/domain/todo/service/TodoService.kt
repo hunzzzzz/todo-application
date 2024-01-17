@@ -17,12 +17,20 @@ class TodoService(
         todoRepository.findAll().map { TodoResponse.from(it) }
 
     @Transactional
+    fun findTodo(todoId: Long) =
+        TodoResponse.from(todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo"))
+
+    @Transactional
     fun addTodo(request: AddTodoRequest) =
         todoRepository.save(request.to()).id!!
 
     @Transactional
     fun updateTodo(todoId: Long, request: AddTodoRequest) =
         (todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")).update(request)
+
+    @Transactional
+    fun updateTodoCompletion(todoId: Long) =
+        (todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")).update()
 
     @Transactional
     fun deleteTodo(todoId: Long) =

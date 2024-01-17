@@ -35,4 +35,8 @@ class Todo(
         this.content = request.content
         this.date = request.date
     }
+
+    fun update() {
+        this.isCompleted = !this.isCompleted
+    }
 }

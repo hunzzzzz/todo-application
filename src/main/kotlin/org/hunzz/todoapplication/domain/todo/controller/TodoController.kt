@@ -18,6 +18,10 @@ import java.net.URI
 class TodoController(
     private val todoService: TodoService
 ) {
+    @GetMapping("/{todoId}")
+    fun findTodo(@PathVariable todoId: Long) =
+        ResponseEntity.ok(todoService.findTodo(todoId))
+
     @GetMapping
     fun findAllTodos() = ResponseEntity.ok(todoService.findAllTodos())
 
@@ -32,6 +36,12 @@ class TodoController(
     @PutMapping("/{todoId}")
     fun updateTodo(@PathVariable todoId: Long, @RequestBody request: AddTodoRequest): ResponseEntity<Unit> {
         todoService.updateTodo(todoId, request)
+        return ResponseEntity.ok().build()
+    }
+
+    @PutMapping("convert/{todoId}")
+    fun updateTodoCompletion(@PathVariable todoId: Long): ResponseEntity<Unit> {
+        todoService.updateTodoCompletion(todoId)
         return ResponseEntity.ok().build()
     }
 

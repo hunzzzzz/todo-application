@@ -6,10 +6,13 @@ import java.time.LocalDateTime
 data class TodoResponse(
     val title: String,
     val content: String,
+    val date: LocalDateTime,
+    val isCompleted: Boolean,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 ) {
     companion object {
-        fun from(todo: Todo) = TodoResponse(todo.title, todo.content, todo.createdAt, todo.updatedAt)
+        fun from(todo: Todo) =
+            TodoResponse(todo.title, todo.content, todo.date, todo.isCompleted, todo.createdAt, todo.updatedAt)
     }
 }

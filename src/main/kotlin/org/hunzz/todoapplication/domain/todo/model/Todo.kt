@@ -9,12 +9,12 @@ import java.time.LocalDateTime
 @Table(name = "todos")
 class Todo(
     title: String,
-    content: String,
+    content: String?,
     date: LocalDateTime,
     isCompleted: Boolean = false
 ) : BaseEntity() {
     @Id
-    @Column(name = "member_id")
+    @Column(name = "todo_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
@@ -22,7 +22,7 @@ class Todo(
     var title = title
 
     @Column(name = "content")
-    var content = content
+    var content: String? = content
 
     @Column(name = "date", columnDefinition = "TIMESTAMP(6)", nullable = false)
     var date = date

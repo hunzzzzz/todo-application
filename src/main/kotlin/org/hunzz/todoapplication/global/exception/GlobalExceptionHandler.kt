@@ -10,4 +10,7 @@ class GlobalExceptionHandler {
 
     fun handleWrongCriteriaException(e: WrongCriteriaException) =
         ResponseEntity.badRequest().body(e.message)
+
+    fun handleWrongCommentPasswordException(e: WrongCommentPasswordException) =
+        ResponseEntity.badRequest().body(e.message)
 }

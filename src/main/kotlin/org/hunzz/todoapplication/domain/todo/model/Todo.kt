@@ -1,6 +1,7 @@
 package org.hunzz.todoapplication.domain.todo.model
 
 import jakarta.persistence.*
+import org.hunzz.todoapplication.domain.todo.dto.request.AddTodoRequest
 import org.hunzz.todoapplication.global.BaseEntity
 import java.time.LocalDateTime
 
@@ -28,4 +29,10 @@ class Todo(
 
     @Column(name = "is_completed")
     var isCompleted = isCompleted
+
+    fun update(request: AddTodoRequest) {
+        this.title = request.title
+        this.content = request.content
+        this.date = request.date
+    }
 }

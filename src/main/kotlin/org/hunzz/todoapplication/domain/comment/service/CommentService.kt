@@ -1,9 +1,11 @@
 package org.hunzz.todoapplication.domain.comment.service
 
 import org.hunzz.todoapplication.domain.comment.dto.request.AddCommentRequest
+import org.hunzz.todoapplication.domain.comment.dto.request.DeleteCommentRequest
 import org.hunzz.todoapplication.domain.comment.repository.CommentRepository
 import org.hunzz.todoapplication.domain.todo.repository.TodoRepository
 import org.hunzz.todoapplication.global.exception.ModelNotFoundException
+import org.hunzz.todoapplication.global.exception.WrongCommentPasswordException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,15 +23,21 @@ class CommentService(
 
     @Transactional
     fun updateComment(todoId: Long, commentId: Long, request: AddCommentRequest) =
-        getComment(commentId).update(request)
+        validateCommentPassword(commentId, request.password).run { getComment(commentId).update(request) }
+
 
     @Transactional
-    fun deleteComment(todoId: Long, commentId: Long) =
-        commentRepository.deleteById(commentId)
+    fun deleteComment(todoId: Long, commentId: Long, request: DeleteCommentRequest) =
+        validateCommentPassword(commentId, request.password).run { commentRepository.deleteById(commentId) }
 
     private fun getTodo(todoId: Long) =
         todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
 
     private fun getComment(commentId: Long) =
         commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment")
+
+    private fun validateCommentPassword(commentId: Long, password: String) {
+        val comment = getComment(commentId)
+        if (password != comment.password) throw WrongCommentPasswordException()
+    }
 }

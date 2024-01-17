@@ -1,12 +1,14 @@
 package org.hunzz.todoapplication.domain.comment.controller
 
 import org.hunzz.todoapplication.domain.comment.dto.request.AddCommentRequest
+import org.hunzz.todoapplication.domain.comment.dto.request.DeleteCommentRequest
 import org.hunzz.todoapplication.domain.comment.service.CommentService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
@@ -21,7 +23,7 @@ class CommentController(
         return ResponseEntity.created(
             URI.create(
                 String.format(
-                    "/api/v1/todos/{todoId}/comments/%d",
+                    "/api/v1/todos/%d/comments/%d", todoId,
                     commentService.addComment(todoId, request)
                 )
             )
@@ -39,8 +41,12 @@ class CommentController(
     }
 
     @DeleteMapping("/{commentId}")
-    fun deleteComment(@PathVariable todoId: Long, @PathVariable commentId: Long): ResponseEntity<Unit> {
-        commentService.deleteComment(todoId, commentId)
+    fun deleteComment(
+        @PathVariable todoId: Long,
+        @PathVariable commentId: Long,
+        @RequestBody request: DeleteCommentRequest
+    ): ResponseEntity<Unit> {
+        commentService.deleteComment(todoId, commentId, request)
         return ResponseEntity.noContent().build()
     }
 }

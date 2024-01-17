@@ -20,10 +20,16 @@ class CommentService(
     }
 
     @Transactional
-    fun deleteComment(todoId: Long, commentId: Long) {
-        getTodo(todoId)
-        commentRepository.deleteById(commentId)
-    }
+    fun updateComment(todoId: Long, commentId: Long, request: AddCommentRequest) =
+        getComment(commentId).update(request)
 
-    private fun getTodo(todoId: Long) = todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
+    @Transactional
+    fun deleteComment(todoId: Long, commentId: Long) =
+        commentRepository.deleteById(commentId)
+
+    private fun getTodo(todoId: Long) =
+        todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
+
+    private fun getComment(commentId: Long) =
+        commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment")
 }

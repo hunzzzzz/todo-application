@@ -1,6 +1,7 @@
 package org.hunzz.todoapplication.domain.comment.model
 
 import jakarta.persistence.*
+import org.hunzz.todoapplication.domain.comment.dto.request.AddCommentRequest
 import org.hunzz.todoapplication.domain.todo.model.Todo
 import org.hunzz.todoapplication.global.BaseEntity
 
@@ -25,4 +26,9 @@ class Comment(
     @ManyToOne
     @JoinColumn(name = "todo_id")
     var todo: Todo = todo
+
+    fun update(request: AddCommentRequest) {
+        this.content = request.content
+        this.password = request.password
+    }
 }

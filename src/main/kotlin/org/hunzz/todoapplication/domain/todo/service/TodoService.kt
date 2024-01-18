@@ -1,6 +1,7 @@
 package org.hunzz.todoapplication.domain.todo.service
 
 import org.hunzz.todoapplication.domain.comment.service.CommentService
+import org.hunzz.todoapplication.domain.member.repository.MemberRepository
 import org.hunzz.todoapplication.domain.todo.dto.request.AddTodoRequest
 import org.hunzz.todoapplication.domain.todo.dto.response.TodoResponse
 import org.hunzz.todoapplication.domain.todo.repository.TodoRepository
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class TodoService(
+    private val memberRepository: MemberRepository,
     private val todoRepository: TodoRepository,
     private val commentService: CommentService
 ) {
@@ -35,7 +37,7 @@ class TodoService(
 
     @Transactional
     fun addTodo(request: AddTodoRequest) =
-        todoRepository.save(request.to()).id!!
+        todoRepository.save(request.to(getMember(request.memberId))).id!!
 
     @Transactional
     fun updateTodo(todoId: Long, request: AddTodoRequest) = getTodo(todoId).update(request)
@@ -47,7 +49,11 @@ class TodoService(
     fun deleteTodo(todoId: Long) =
         deleteAllCommentsByTodoId(todoId).run { todoRepository.deleteById(todoId) }
 
-    private fun getTodo(todoId: Long) = todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
+    private fun getMember(memberId: Long) =
+        memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member")
+
+    private fun getTodo(todoId: Long) =
+        todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
 
     private fun getAllCommentsByTodoId(todoId: Long) =
         commentService.findAllCommentsByTodoId(todoId)

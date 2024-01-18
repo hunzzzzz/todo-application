@@ -6,6 +6,7 @@ import org.hunzz.todoapplication.domain.todo.model.Todo
 import java.time.LocalDateTime
 
 data class TodoResponse(
+    val memberName: String,
     val title: String,
     val content: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -20,6 +21,7 @@ data class TodoResponse(
     companion object {
         fun from(todo: Todo, comments: List<CommentResponse>) =
             TodoResponse(
+                todo.member.name,
                 todo.title,
                 todo.content,
                 todo.date,

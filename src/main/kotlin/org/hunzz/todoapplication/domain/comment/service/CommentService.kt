@@ -2,6 +2,7 @@ package org.hunzz.todoapplication.domain.comment.service
 
 import org.hunzz.todoapplication.domain.comment.dto.request.AddCommentRequest
 import org.hunzz.todoapplication.domain.comment.dto.request.DeleteCommentRequest
+import org.hunzz.todoapplication.domain.comment.dto.response.CommentResponse
 import org.hunzz.todoapplication.domain.comment.repository.CommentRepository
 import org.hunzz.todoapplication.domain.todo.repository.TodoRepository
 import org.hunzz.todoapplication.global.exception.ModelNotFoundException
@@ -15,6 +16,12 @@ class CommentService(
     private val todoRepository: TodoRepository,
     private val commentRepository: CommentRepository
 ) {
+    @Transactional
+    fun findAllCommentsByTodoId(todoId: Long): List<CommentResponse> {
+        println(todoId)
+        return commentRepository.findAllCommentsByTodoId(todoId).map { CommentResponse.from(it) }
+    }
+
     @Transactional
     fun addComment(todoId: Long, request: AddCommentRequest): Long {
         val todo = getTodo(todoId)

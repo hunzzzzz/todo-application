@@ -2,7 +2,7 @@ package org.hunzz.todoapplication.domain.todo.model
 
 import jakarta.persistence.*
 import org.hunzz.todoapplication.domain.todo.dto.request.AddTodoRequest
-import org.hunzz.todoapplication.global.BaseEntity
+import org.hunzz.todoapplication.global.entity.BaseEntity
 import java.time.LocalDateTime
 
 @Entity

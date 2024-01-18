@@ -1,7 +1,7 @@
 package org.hunzz.todoapplication.domain.member.model
 
 import jakarta.persistence.*
-import org.hunzz.todoapplication.global.BaseEntity
+import org.hunzz.todoapplication.global.entity.BaseEntity
 
 @Entity
 @Table(name = "members")

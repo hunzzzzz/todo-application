@@ -21,7 +21,7 @@ class CommentController(
     @PostMapping
     fun addComment(request: AddCommentRequest): ResponseEntity<Unit> {
         return ResponseEntity.created(
-            URI.create(String.format("/api/v1/comments/%d", commentService.addComment(request)))
+            URI.create("/api/v1/comments/${commentService.addComment(request)}")
         ).build()
     }
 

@@ -14,39 +14,32 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/api/v1/todos/{todoId}/comments")
+@RequestMapping("/api/v1/comments")
 class CommentController(
     val commentService: CommentService
 ) {
     @PostMapping
-    fun addComment(@PathVariable todoId: Long, request: AddCommentRequest): ResponseEntity<Unit> {
+    fun addComment(request: AddCommentRequest): ResponseEntity<Unit> {
         return ResponseEntity.created(
-            URI.create(
-                String.format(
-                    "/api/v1/todos/%d/comments/%d", todoId,
-                    commentService.addComment(todoId, request)
-                )
-            )
+            URI.create(String.format("/api/v1/comments/%d", commentService.addComment(request)))
         ).build()
     }
 
     @PutMapping("/{commentId}")
     fun updateComment(
-        @PathVariable todoId: Long,
         @PathVariable commentId: Long,
         request: AddCommentRequest
     ): ResponseEntity<Unit> {
-        commentService.updateComment(todoId, commentId, request)
+        commentService.updateComment(commentId, request)
         return ResponseEntity.ok().build()
     }
 
     @DeleteMapping("/{commentId}")
     fun deleteComment(
-        @PathVariable todoId: Long,
         @PathVariable commentId: Long,
         @RequestBody request: DeleteCommentRequest
     ): ResponseEntity<Unit> {
-        commentService.deleteComment(todoId, commentId, request)
+        commentService.deleteComment(commentId, request)
         return ResponseEntity.noContent().build()
     }
 }

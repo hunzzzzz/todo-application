@@ -1,6 +1,7 @@
 package org.hunzz.todoapplication.domain.todo.model
 
 import jakarta.persistence.*
+import org.hunzz.todoapplication.domain.member.model.Member
 import org.hunzz.todoapplication.domain.todo.dto.request.AddTodoRequest
 import org.hunzz.todoapplication.global.entity.BaseEntity
 import java.time.LocalDateTime
@@ -11,7 +12,8 @@ class Todo(
     title: String,
     content: String?,
     date: LocalDateTime,
-    isCompleted: Boolean = false
+    isCompleted: Boolean = false,
+    member: Member
 ) : BaseEntity() {
     @Id
     @Column(name = "todo_id")
@@ -29,6 +31,10 @@ class Todo(
 
     @Column(name = "is_completed")
     var isCompleted = isCompleted
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    var member = member
 
     fun update(request: AddTodoRequest) {
         this.title = request.title

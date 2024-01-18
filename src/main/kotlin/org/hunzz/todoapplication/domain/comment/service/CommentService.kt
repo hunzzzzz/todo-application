@@ -23,19 +23,20 @@ class CommentService(
     }
 
     @Transactional
-    fun addComment(todoId: Long, request: AddCommentRequest): Long {
-        val todo = getTodo(todoId)
+    fun addComment(request: AddCommentRequest): Long {
+        val todo = getTodo(request.todoId)
         return commentRepository.save(request.to(todo)).id!!
     }
 
     @Transactional
-    fun updateComment(todoId: Long, commentId: Long, request: AddCommentRequest) =
-        validateCommentPassword(commentId, request.password).run { getComment(commentId).update(request) }
-
+    fun updateComment(commentId: Long, request: AddCommentRequest) =
+        validate(request.todoId, commentId, request.password)
+            .run { getComment(commentId).update(request) }
 
     @Transactional
-    fun deleteComment(todoId: Long, commentId: Long, request: DeleteCommentRequest) =
-        validateCommentPassword(commentId, request.password).run { commentRepository.deleteById(commentId) }
+    fun deleteComment(commentId: Long, request: DeleteCommentRequest) =
+        validate(request.todoId, commentId, request.password)
+            .run { commentRepository.deleteById(commentId) }
 
     private fun getTodo(todoId: Long) =
         todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
@@ -43,8 +44,9 @@ class CommentService(
     private fun getComment(commentId: Long) =
         commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment")
 
-    private fun validateCommentPassword(commentId: Long, password: String) {
+    private fun validate(todoId: Long, commentId: Long, password: String) {
         val comment = getComment(commentId)
-        if (password != comment.password) throw WrongCommentPasswordException()
+        if (!todoRepository.existsById(todoId)) throw ModelNotFoundException("Todo")
+        else if (password != comment.password) throw WrongCommentPasswordException()
     }
 }

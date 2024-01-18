@@ -31,27 +31,23 @@ class TodoService(
         }
 
     @Transactional
-    fun findTodo(todoId: Long) =
-        TodoResponse.from(
-            todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo"),
-            getAllCommentsByTodoId(todoId)
-        )
+    fun findTodo(todoId: Long) = TodoResponse.from(getTodo(todoId), getAllCommentsByTodoId(todoId))
 
     @Transactional
     fun addTodo(request: AddTodoRequest) =
         todoRepository.save(request.to()).id!!
 
     @Transactional
-    fun updateTodo(todoId: Long, request: AddTodoRequest) =
-        (todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")).update(request)
+    fun updateTodo(todoId: Long, request: AddTodoRequest) = getTodo(todoId).update(request)
 
     @Transactional
-    fun updateTodoCompletion(todoId: Long) =
-        (todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")).update()
+    fun updateTodoCompletion(todoId: Long) = getTodo(todoId).update()
 
     @Transactional
     fun deleteTodo(todoId: Long) =
         todoRepository.deleteById(todoId)
+
+    private fun getTodo(todoId: Long) = todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
 
     private fun getAllCommentsByTodoId(todoId: Long) =
         commentService.findAllCommentsByTodoId(todoId)

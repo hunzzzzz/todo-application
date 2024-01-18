@@ -33,6 +33,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
+	implementation("org.springframework.boot:spring-boot-starter-aop:3.2.1")
 }
 
 tasks.withType<KotlinCompile> {

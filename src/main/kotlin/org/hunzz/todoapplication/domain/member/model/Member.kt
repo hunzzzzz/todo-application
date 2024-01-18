@@ -8,7 +8,7 @@ import org.hunzz.todoapplication.global.entity.BaseEntity
 class Member(
     name: String,
     email: String,
-    nickname: String,
+    nickname: String?,
     password: String
 ) : BaseEntity() {
     @Id

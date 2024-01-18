@@ -2,6 +2,7 @@ package org.hunzz.todoapplication.domain.comment.model
 
 import jakarta.persistence.*
 import org.hunzz.todoapplication.domain.comment.dto.request.AddCommentRequest
+import org.hunzz.todoapplication.domain.member.model.Member
 import org.hunzz.todoapplication.domain.todo.model.Todo
 import org.hunzz.todoapplication.global.entity.BaseEntity
 
@@ -10,7 +11,8 @@ import org.hunzz.todoapplication.global.entity.BaseEntity
 class Comment(
     content: String,
     password: String,
-    todo: Todo
+    todo: Todo,
+    member: Member
 ) : BaseEntity() {
     @Id
     @Column(name = "comment_id")
@@ -26,6 +28,10 @@ class Comment(
     @ManyToOne
     @JoinColumn(name = "todo_id")
     var todo: Todo = todo
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    var member: Member = member
 
     fun update(request: AddCommentRequest) {
         this.content = request.content

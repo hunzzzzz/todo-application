@@ -38,6 +38,9 @@ class CommentService(
         validate(request.todoId, commentId, request.password)
             .run { commentRepository.deleteById(commentId) }
 
+    @Transactional
+    fun deleteCommentsByTodoId(todoId: Long) = commentRepository.deleteAllCommentsByTodoId(todoId)
+
     private fun getTodo(todoId: Long) =
         todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
 

@@ -3,6 +3,7 @@ package org.hunzz.todoapplication.domain.member.dto.request
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.hunzz.todoapplication.domain.member.model.Member
+import org.hunzz.todoapplication.global.util.NicknameGenerator.generateNickname
 
 data class SignUpRequest(
 //    @NotBlank(message = "Name is required.")
@@ -17,5 +18,5 @@ data class SignUpRequest(
 //    )
     val password: String
 ) {
-    fun to() = Member(name, email, nickname, password)
+    fun to() = Member(name, email, nickname ?: generateNickname(), password)
 }

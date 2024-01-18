@@ -3,7 +3,7 @@ package org.hunzz.todoapplication.domain.comment.model
 import jakarta.persistence.*
 import org.hunzz.todoapplication.domain.comment.dto.request.AddCommentRequest
 import org.hunzz.todoapplication.domain.todo.model.Todo
-import org.hunzz.todoapplication.global.BaseEntity
+import org.hunzz.todoapplication.global.entity.BaseEntity
 
 @Entity
 @Table(name = "comments")

@@ -1,4 +1,4 @@
-package org.hunzz.todoapplication.global
+package org.hunzz.todoapplication.global.config
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI

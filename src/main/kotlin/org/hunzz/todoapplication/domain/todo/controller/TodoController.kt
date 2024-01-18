@@ -34,9 +34,7 @@ class TodoController(
     @PostMapping
     fun addTodo(@RequestBody request: AddTodoRequest): ResponseEntity<Unit> =
         ResponseEntity.created(
-            URI.create(
-                String.format("/api/v1/todos/%d", todoService.addTodo(request))
-            )
+            URI.create("/api/v1/todos/${todoService.addTodo(request)}")
         ).build()
 
     @PutMapping("/{todoId}")

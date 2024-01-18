@@ -36,10 +36,11 @@ class Todo(
     @JoinColumn(name = "member_id")
     var member = member
 
-    fun update(request: AddTodoRequest) {
+    fun update(request: AddTodoRequest, member: Member) {
         this.title = request.title
         this.content = request.content
         this.date = request.date
+        this.member = member
     }
 
     fun update() {

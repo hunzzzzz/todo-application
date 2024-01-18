@@ -45,10 +45,13 @@ class TodoService(
 
     @Transactional
     fun deleteTodo(todoId: Long) =
-        todoRepository.deleteById(todoId)
+        deleteAllCommentsByTodoId(todoId).run { todoRepository.deleteById(todoId) }
 
     private fun getTodo(todoId: Long) = todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo")
 
     private fun getAllCommentsByTodoId(todoId: Long) =
         commentService.findAllCommentsByTodoId(todoId)
+
+    private fun deleteAllCommentsByTodoId(todoId: Long) =
+        commentService.deleteCommentsByTodoId(todoId)
 }

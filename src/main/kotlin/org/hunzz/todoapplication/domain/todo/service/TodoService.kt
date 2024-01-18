@@ -40,10 +40,12 @@ class TodoService(
         todoRepository.save(request.to(getMember(request.memberId))).id!!
 
     @Transactional
-    fun updateTodo(todoId: Long, request: AddTodoRequest) = getTodo(todoId).update(request)
+    fun updateTodo(todoId: Long, request: AddTodoRequest) =
+        getTodo(todoId).update(request, getMember(request.memberId))
 
     @Transactional
-    fun updateTodoCompletion(todoId: Long) = getTodo(todoId).update()
+    fun updateTodoCompletion(todoId: Long) =
+        getTodo(todoId).update()
 
     @Transactional
     fun deleteTodo(todoId: Long) =

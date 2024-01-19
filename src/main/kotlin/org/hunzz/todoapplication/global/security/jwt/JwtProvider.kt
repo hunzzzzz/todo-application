@@ -1,20 +1,45 @@
 package org.hunzz.todoapplication.global.security.jwt
 
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
+import java.time.Duration
+import java.time.Instant
+import java.util.Date
 
 @Component
-object JwtProvider {
-    private const val SECRET = "5v87n5ytf9c9wn9yfco8w7adh8whonca8f87"
-    private val KEY = Keys.hmacShaKeyFor(SECRET.toByteArray())
+class JwtProvider(
+    @Value("\${auth.jwt.issuer}") private val issuer: String,
+    @Value("\${auth.jwt.secret}") private val secret: String,
+    @Value("\${auth.jwt.accessTokenExpirationHour}") private val accessTokenExpirationHour: Long,
+    @Value("\${auth.jwt.refreshTokenExpirationHour}") private val refreshTokenExpirationHour: Long
+) {
 
-    // 토큰 검증 → 검증이 되지 않으면 예외 처리
-    fun validateToken(jwt: String): Result<*> {
+    // 토큰 검증
+    fun validateToken(jwt: String): Result<Jws<Claims>> {
         return kotlin.runCatching {
-            val key = Keys.hmacShaKeyFor(SECRET.toByteArray(StandardCharsets.UTF_8))
+            val key = getKey()
             Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt)
         }
     }
+
+    // 토큰 생성
+    fun createToken(subject: String, email: String, role: String, exp: Long) =
+        Jwts.builder()
+            .subject(subject)
+            .issuer(issuer)
+            .issuedAt(Date.from(Instant.now()))
+            .expiration(Date.from(Instant.now().plus(Duration.ofHours(exp))))
+            .claims(getClaim(email, role))
+            .signWith(getKey())
+            .compact()
+
+    private fun getClaim(email: String, role: String) =
+        Jwts.claims().add(mapOf("email" to email, "role" to role)).build()
+
+    private fun getKey() = Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
 }

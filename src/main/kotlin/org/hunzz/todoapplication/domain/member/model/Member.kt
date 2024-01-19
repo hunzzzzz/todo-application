@@ -1,15 +1,16 @@
 package org.hunzz.todoapplication.domain.member.model
 
 import jakarta.persistence.*
-import org.hunzz.todoapplication.global.BaseEntity
+import org.hunzz.todoapplication.global.entity.BaseEntity
 
 @Entity
 @Table(name = "members")
 class Member(
     name: String,
     email: String,
-    nickname: String,
-    password: String
+    nickname: String?,
+    password: String,
+    role: MemberRole = MemberRole.MEMBER
 ) : BaseEntity() {
     @Id
     @Column(name = "member_id")
@@ -27,4 +28,8 @@ class Member(
 
     @Column(name = "password")
     var password = password
+  
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    var role = role
 }

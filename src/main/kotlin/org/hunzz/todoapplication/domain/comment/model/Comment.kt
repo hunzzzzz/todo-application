@@ -21,7 +21,7 @@ class Comment(
 
     @Column(name = "content")
     var content = content
-
+  
     @Column(name = "password")
     var password = password
 

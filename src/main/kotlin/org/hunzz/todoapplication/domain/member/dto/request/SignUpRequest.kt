@@ -3,6 +3,7 @@ package org.hunzz.todoapplication.domain.member.dto.request
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.hunzz.todoapplication.domain.member.model.Member
+import org.hunzz.todoapplication.domain.member.model.MemberRole
 import org.hunzz.todoapplication.global.util.NicknameGenerator.generateNickname
 import org.hunzz.todoapplication.global.util.PasswordEncoder
 
@@ -17,8 +18,9 @@ data class SignUpRequest(
 //        message = "Password must contain alphabet, special character, and numbers," +
 //                "and also must be 8~12 characters."
 //    )
-    val password: String
+    val password: String,
+    val role: MemberRole
 ) {
     fun to() =
-        Member(name, email, nickname ?: generateNickname(), PasswordEncoder.encode(password))
+        Member(name, email, nickname ?: generateNickname(), PasswordEncoder.encode(password), role)
 }

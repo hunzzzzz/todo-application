@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.hunzz.todoapplication.domain.member.model.Member
 import org.hunzz.todoapplication.global.util.NicknameGenerator.generateNickname
+import org.hunzz.todoapplication.global.util.PasswordEncoder
 
 data class SignUpRequest(
 //    @NotBlank(message = "Name is required.")
@@ -18,5 +19,6 @@ data class SignUpRequest(
 //    )
     val password: String
 ) {
-    fun to() = Member(name, email, nickname ?: generateNickname(), password)
+    fun to() =
+        Member(name, email, nickname ?: generateNickname(), PasswordEncoder.encode(password))
 }

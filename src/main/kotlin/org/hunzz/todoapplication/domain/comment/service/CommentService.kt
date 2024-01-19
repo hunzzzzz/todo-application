@@ -8,6 +8,7 @@ import org.hunzz.todoapplication.domain.member.repository.MemberRepository
 import org.hunzz.todoapplication.domain.todo.repository.TodoRepository
 import org.hunzz.todoapplication.global.exception.ModelNotFoundException
 import org.hunzz.todoapplication.global.exception.WrongCommentPasswordException
+import org.hunzz.todoapplication.global.util.PasswordEncoder
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -58,7 +59,7 @@ class CommentService(
             .let {
                 if (memberId != it.member.id) throw ModelNotFoundException("Member")
                 else if (todoId != it.todo.id) throw ModelNotFoundException("Todo")
-                else if (password != it.password) throw WrongCommentPasswordException()
+                else if (password != PasswordEncoder.decode(it.password)) throw WrongCommentPasswordException()
             }
     }
 }

@@ -5,6 +5,7 @@ import org.hunzz.todoapplication.domain.comment.dto.request.AddCommentRequest
 import org.hunzz.todoapplication.domain.member.model.Member
 import org.hunzz.todoapplication.domain.todo.model.Todo
 import org.hunzz.todoapplication.global.entity.BaseEntity
+import org.hunzz.todoapplication.global.util.PasswordEncoder
 
 @Entity
 @Table(name = "comments")
@@ -35,6 +36,5 @@ class Comment(
 
     fun update(request: AddCommentRequest) {
         this.content = request.content
-        this.password = request.password
     }
 }

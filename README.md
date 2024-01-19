@@ -28,6 +28,7 @@ members{
 	nickname varchar "멤버 닉네임"
 	email varchar "멤버 이메일"
 	password varchar "멤버 비밀번호"
+        role varchar "멤버 역할"
 	created_at timestamp "멤버 가입일자"
 	updated_at timestamp "멤버 수정일자"
 }
@@ -36,7 +37,7 @@ todos{
 	member_id int FK "멤버 아이디"
 	title varchar "투두 제목"
 	content varchar "투두 내용"
-  date timestmap "투두 수행일"
+        date timestmap "투두 수행일"
 	is_completed boolean "투두 완료 여부"
 	created_at timestamp "질문 작성일자"
 	updated_at timestamp "질문 수정일자"

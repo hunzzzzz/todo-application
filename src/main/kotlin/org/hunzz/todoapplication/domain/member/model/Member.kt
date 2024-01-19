@@ -29,6 +29,7 @@ class Member(
     @Column(name = "password")
     var password = password
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
     var role = role
 }

@@ -8,9 +8,12 @@ class GlobalExceptionHandler {
     fun handleModelNotFoundException(e: ModelNotFoundException) =
         ResponseEntity.badRequest().body(e.message)
 
-    fun handleWrongCriteriaException(e: WrongCriteriaException) =
+    fun handleInvalidCriteriaException(e: InvalidCriteriaException) =
         ResponseEntity.badRequest().body(e.message)
 
-    fun handleWrongCommentPasswordException(e: WrongCommentPasswordException) =
+    fun handleInvalidPasswordException(e: InvalidPasswordException) =
+        ResponseEntity.badRequest().body(e.message)
+
+    fun handleInvalidCredentialException(e: InvalidCredentialException) =
         ResponseEntity.badRequest().body(e.message)
 }

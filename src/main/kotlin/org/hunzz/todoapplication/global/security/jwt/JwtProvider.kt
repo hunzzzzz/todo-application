@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.hunzz.todoapplication.domain.member.dto.response.JwtResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
@@ -28,7 +29,7 @@ class JwtProvider(
     }
 
     // 토큰 생성
-    fun createToken(subject: String, email: String, role: String, exp: Long) =
+    private fun createToken(subject: String, email: String, role: String, exp: Long) =
         Jwts.builder()
             .subject(subject)
             .issuer(issuer)
@@ -37,6 +38,13 @@ class JwtProvider(
             .claims(getClaim(email, role))
             .signWith(getKey())
             .compact()
+
+    // 토큰 발급
+    fun provideToken(subject: String, email: String, role: String) =
+        JwtResponse(
+            accessToken = createToken(subject, email, role, accessTokenExpirationHour),
+            refreshToken = createToken(subject, email, role, refreshTokenExpirationHour)
+        )
 
     private fun getClaim(email: String, role: String) =
         Jwts.claims().add(mapOf("email" to email, "role" to role)).build()

@@ -6,7 +6,7 @@ import org.hunzz.todoapplication.domain.todo.dto.request.AddTodoRequest
 import org.hunzz.todoapplication.domain.todo.dto.response.TodoResponse
 import org.hunzz.todoapplication.domain.todo.repository.TodoRepository
 import org.hunzz.todoapplication.global.exception.ModelNotFoundException
-import org.hunzz.todoapplication.global.exception.WrongCriteriaException
+import org.hunzz.todoapplication.global.exception.InvalidCriteriaException
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -29,7 +29,7 @@ class TodoService(
             (todoRepository.findAll(Sort.by(sort, criteria)))
                 .map { TodoResponse.from(it, getAllCommentsByTodoId(it.id!!)) }
         } catch (e: Exception) {
-            throw WrongCriteriaException(criteria)
+            throw InvalidCriteriaException(criteria)
         }
 
     @Transactional

@@ -1,4 +1,4 @@
 package org.hunzz.todoapplication.global.exception
 
-class WrongCriteriaException(criteria: String) :
+class InvalidCriteriaException(criteria: String) :
     RuntimeException("Criteria '$criteria' is not suitable.")

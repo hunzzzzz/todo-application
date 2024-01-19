@@ -7,7 +7,7 @@ import org.hunzz.todoapplication.domain.comment.repository.CommentRepository
 import org.hunzz.todoapplication.domain.member.repository.MemberRepository
 import org.hunzz.todoapplication.domain.todo.repository.TodoRepository
 import org.hunzz.todoapplication.global.exception.ModelNotFoundException
-import org.hunzz.todoapplication.global.exception.WrongCommentPasswordException
+import org.hunzz.todoapplication.global.exception.InvalidPasswordException
 import org.hunzz.todoapplication.global.util.PasswordEncoder
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -20,17 +20,15 @@ class CommentService(
     private val commentRepository: CommentRepository
 ) {
     @Transactional
-    fun findAllCommentsByTodoId(todoId: Long): List<CommentResponse> {
-        println(todoId)
-        return commentRepository.findAllCommentsByTodoId(todoId).map { CommentResponse.from(it) }
-    }
+    fun findAllCommentsByTodoId(todoId: Long) =
+        commentRepository.findAllCommentsByTodoId(todoId).map { CommentResponse.from(it) }
 
     @Transactional
-    fun addComment(request: AddCommentRequest): Long {
-        val member = getMember(request.memberId)
-        val todo = getTodo(request.todoId)
-        return commentRepository.save(request.to(todo, member)).id!!
-    }
+    fun addComment(request: AddCommentRequest) =
+        commentRepository.save(request.to(
+            todo = getTodo(request.todoId),
+            member = getMember(request.memberId))
+        ).id!!
 
     @Transactional
     fun updateComment(commentId: Long, request: AddCommentRequest) =
@@ -54,12 +52,11 @@ class CommentService(
     private fun getComment(commentId: Long) =
         commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment")
 
-    private fun validate(memberId: Long, todoId: Long, commentId: Long, password: String) {
+    private fun validate(memberId: Long, todoId: Long, commentId: Long, password: String) =
         getComment(commentId)
             .let {
                 if (memberId != it.member.id) throw ModelNotFoundException("Member")
                 else if (todoId != it.todo.id) throw ModelNotFoundException("Todo")
-                else if (password != PasswordEncoder.decode(it.password)) throw WrongCommentPasswordException()
+                else if (password != PasswordEncoder.decode(it.password)) throw InvalidPasswordException()
             }
-    }
 }

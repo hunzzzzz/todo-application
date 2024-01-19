@@ -9,7 +9,8 @@ class Member(
     name: String,
     email: String,
     nickname: String?,
-    password: String
+    password: String,
+    role: MemberRole = MemberRole.MEMBER
 ) : BaseEntity() {
     @Id
     @Column(name = "member_id")
@@ -27,4 +28,7 @@ class Member(
 
     @Column(name = "password")
     var password = password
+
+    @Column(name = "role")
+    var role = role
 }

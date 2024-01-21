@@ -3,9 +3,10 @@ package org.hunzz.todoapplication.domain.member.controller
 import jakarta.validation.Valid
 import org.hunzz.todoapplication.domain.member.dto.request.LoginRequest
 import org.hunzz.todoapplication.domain.member.dto.request.SignUpRequest
-import org.hunzz.todoapplication.domain.member.dto.response.JwtResponse
 import org.hunzz.todoapplication.domain.member.service.MemberService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -26,4 +27,10 @@ class MemberController(
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest) =
         ResponseEntity.ok(memberService.login(loginRequest))
+
+    @DeleteMapping("/{memberId}")
+    fun withdrawal(@PathVariable memberId: Long): ResponseEntity<Unit> {
+        memberService.withdrawal(memberId)
+        return ResponseEntity.noContent().build()
+    }
 }

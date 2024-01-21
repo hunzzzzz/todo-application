@@ -4,17 +4,20 @@ import org.hunzz.todoapplication.domain.member.dto.request.LoginRequest
 import org.hunzz.todoapplication.domain.member.dto.request.SignUpRequest
 import org.hunzz.todoapplication.domain.member.model.Member
 import org.hunzz.todoapplication.domain.member.repository.MemberRepository
+import org.hunzz.todoapplication.domain.todo.service.TodoService
 import org.hunzz.todoapplication.global.exception.InvalidCredentialException
 import org.hunzz.todoapplication.global.exception.ModelNotFoundException
 import org.hunzz.todoapplication.global.exception.InvalidPasswordException
 import org.hunzz.todoapplication.global.security.jwt.JwtProvider
 import org.hunzz.todoapplication.global.util.PasswordEncoder
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MemberService(
     private val memberRepository: MemberRepository,
+    private val todoService: TodoService,
     private val jwtProvider: JwtProvider
 ) {
     @Transactional
@@ -32,6 +35,14 @@ class MemberService(
                     role = it.role.name
                 )
             }
+
+    @Transactional
+    fun withdrawal(memberId: Long) =
+        todoService.deleteAllTodosWithMemberId(memberId)
+            .run { getMemberById(memberId).updateForWithdrawal() }
+
+    private fun getMemberById(id: Long) =
+        memberRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member")
 
     private fun getMemberByEmail(email: String) =
         memberRepository.findByEmail(email) ?: throw ModelNotFoundException("Member")

@@ -20,10 +20,10 @@ class Member(
     @Column(name = "name")
     var name = name
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     var email = email
 
-    @Column(name = "nickname", unique = true)
+    @Column(name = "nickname")
     var nickname = nickname
 
     @Column(name = "password")
@@ -32,4 +32,11 @@ class Member(
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     var role = role
+
+    fun updateForWithdrawal() {
+        this.name = "탈퇴한 회원"
+        this.nickname = null
+        this.password = ""
+//        this.role = MemberRole.WITHDRAWN
+    }
 }

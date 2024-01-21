@@ -1,5 +1,6 @@
 package org.hunzz.todoapplication.global.exception
 
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -21,4 +22,8 @@ class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCredentialException::class)
     fun handleInvalidCredentialException(e: InvalidCredentialException) =
         ResponseEntity.badRequest().body(e.message)
+
+    @ExceptionHandler(InvalidJwtException::class)
+    fun handleInvalidAccessException(e: InvalidJwtException) =
+        ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.message)
 }

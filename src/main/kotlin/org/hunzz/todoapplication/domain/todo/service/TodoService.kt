@@ -33,7 +33,8 @@ class TodoService(
         }
 
     @Transactional
-    fun findTodo(todoId: Long) = TodoResponse.from(getTodo(todoId), getAllCommentsByTodoId(todoId))
+    fun findTodo(todoId: Long) =
+        TodoResponse.from(getTodo(todoId), getAllCommentsByTodoId(todoId))
 
     @Transactional
     fun addTodo(request: AddTodoRequest) =
@@ -50,6 +51,12 @@ class TodoService(
     @Transactional
     fun deleteTodo(todoId: Long) =
         deleteAllCommentsByTodoId(todoId).run { todoRepository.deleteById(todoId) }
+
+    @Transactional
+    fun deleteAllTodosWithMemberId(memberId: Long) =
+        todoRepository.findAll()
+            .filter { it.member.id == memberId }
+            .forEach { deleteTodo(it.id!!) }
 
     private fun getMember(memberId: Long) =
         memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member")

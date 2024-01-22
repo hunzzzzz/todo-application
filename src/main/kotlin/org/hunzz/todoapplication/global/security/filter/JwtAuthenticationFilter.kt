@@ -40,7 +40,7 @@ class JwtAuthenticationFilter(
                         SecurityContextHolder.getContext().authentication = authentication
                     }
                     .onFailure { throw InvalidJwtException() }
-            } ?: throw Exception()
+            }
 
         filterChain.doFilter(request, response)
     }

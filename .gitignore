@@ -38,3 +38,9 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+# IntelliJ project files
+out
+gen
+build
+application.yml
